@@ -1,3 +1,4 @@
+import '../../../../core/common/typedef.dart';
 import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
@@ -6,7 +7,7 @@ class GetTasksUseCase {
 
   GetTasksUseCase(this.repository);
 
-  Future<List<Task>> call() {
+  ResultFuture<List<Task>> call() {
     return repository.getTasks();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:task_manager_app/src/core/network/dio_client.dart';
 
 import '../../features/task/data/datasources/task_remote_data_source.dart';
 import '../../features/task/data/repositories/task_repository_impl.dart';
@@ -14,6 +15,7 @@ import '../../features/task/presentation/cubit/task_cubit.dart';
 final sl = GetIt.instance;
 
 Future<void> init() async {
+  
   // 1. External
   final talker = TalkerFlutter.init();
   sl.registerSingleton<Talker>(talker);

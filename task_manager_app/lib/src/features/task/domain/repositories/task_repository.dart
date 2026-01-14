@@ -1,8 +1,9 @@
-import '../entities/task.dart';
+import '../../../../core/common/typedef.dart';
+import '../../domain/entities/task.dart';
 
 abstract class TaskRepository {
-  Future<List<Task>> getTasks();
-  Future<Task> createTask(String title, String subtitle);
-  Future<Task> updateTask(Task task);
-  Future<void> deleteTask(String id);
+  ResultFuture<List<Task>> getTasks();
+  ResultFuture<Task> createTask(String title, String subtitle);
+  ResultFuture<Task> updateTask(Task task);
+  ResultFuture<void> deleteTask(String id);
 }

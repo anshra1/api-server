@@ -1,3 +1,4 @@
+import '../../../../core/common/typedef.dart';
 import '../entities/task.dart';
 import '../repositories/task_repository.dart';
 
@@ -6,7 +7,7 @@ class AddTaskUseCase {
 
   AddTaskUseCase(this.repository);
 
-  Future<Task> call(String title, String subtitle) {
+  ResultFuture<Task> call(String title, String subtitle) {
     return repository.createTask(title, subtitle);
   }
 }

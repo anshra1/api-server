@@ -1,3 +1,4 @@
+import '../../../../core/common/typedef.dart';
 import '../repositories/task_repository.dart';
 
 class DeleteTaskUseCase {
@@ -5,7 +6,7 @@ class DeleteTaskUseCase {
 
   DeleteTaskUseCase(this.repository);
 
-  Future<void> call(String id) {
+  ResultFuture<void> call(String id) {
     return repository.deleteTask(id);
   }
 }
