@@ -1,15 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'task.g.dart';
-
-@JsonSerializable()
 class Task {
   final String id;
-  @JsonKey(defaultValue: 'No Title')
   final String title;
-  @JsonKey(defaultValue: '')
   final String subtitle;
-  @JsonKey(defaultValue: false)
   final bool isCompleted;
 
   Task({
@@ -18,9 +10,6 @@ class Task {
     required this.subtitle,
     required this.isCompleted,
   });
-
-  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
-  Map<String, dynamic> toJson() => _$TaskToJson(this);
 
   Task copyWith({
     String? id,

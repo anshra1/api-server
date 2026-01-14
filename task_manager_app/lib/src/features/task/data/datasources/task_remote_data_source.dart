@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import '../../domain/entities/task.dart';
+import '../models/task_model.dart';
 
 part 'task_remote_data_source.g.dart';
 
@@ -9,13 +9,13 @@ abstract class TaskRemoteDataSource {
   factory TaskRemoteDataSource(Dio dio, {String baseUrl}) = _TaskRemoteDataSource;
 
   @GET('/tasks')
-  Future<List<Task>> getTasks();
+  Future<List<TaskModel>> getTasks();
 
   @POST('/tasks')
-  Future<Task> createTask(@Body() Map<String, dynamic> body);
+  Future<TaskModel> createTask(@Body() Map<String, dynamic> body);
 
   @PUT('/tasks/{id}')
-  Future<Task> updateTask(@Path("id") String id, @Body() Task task);
+  Future<TaskModel> updateTask(@Path("id") String id, @Body() TaskModel task);
 
   @DELETE('/tasks/{id}')
   Future<void> deleteTask(@Path("id") String id);

@@ -20,12 +20,12 @@ class _TaskRemoteDataSource implements TaskRemoteDataSource {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<Task>> getTasks() async {
+  Future<List<TaskModel>> getTasks() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<Task>>(
+    final _options = _setStreamType<List<TaskModel>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -36,10 +36,10 @@ class _TaskRemoteDataSource implements TaskRemoteDataSource {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<Task> _value;
+    late List<TaskModel> _value;
     try {
       _value = _result.data!
-          .map((dynamic i) => Task.fromJson(i as Map<String, dynamic>))
+          .map((dynamic i) => TaskModel.fromJson(i as Map<String, dynamic>))
           .toList();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
@@ -49,13 +49,13 @@ class _TaskRemoteDataSource implements TaskRemoteDataSource {
   }
 
   @override
-  Future<Task> createTask(Map<String, dynamic> body) async {
+  Future<TaskModel> createTask(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(body);
-    final _options = _setStreamType<Task>(
+    final _options = _setStreamType<TaskModel>(
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -66,9 +66,9 @@ class _TaskRemoteDataSource implements TaskRemoteDataSource {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Task _value;
+    late TaskModel _value;
     try {
-      _value = Task.fromJson(_result.data!);
+      _value = TaskModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
@@ -77,13 +77,12 @@ class _TaskRemoteDataSource implements TaskRemoteDataSource {
   }
 
   @override
-  Future<Task> updateTask(String id, Task task) async {
+  Future<TaskModel> updateTask(String id, TaskModel task) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(task.toJson());
-    final _options = _setStreamType<Task>(
+    final _data = task;
+    final _options = _setStreamType<TaskModel>(
       Options(method: 'PUT', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -94,9 +93,9 @@ class _TaskRemoteDataSource implements TaskRemoteDataSource {
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late Task _value;
+    late TaskModel _value;
     try {
-      _value = Task.fromJson(_result.data!);
+      _value = TaskModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options, response: _result);
       rethrow;

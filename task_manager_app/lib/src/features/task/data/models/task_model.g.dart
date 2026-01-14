@@ -1,21 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'task.dart';
+part of 'task_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Task _$TaskFromJson(Map<String, dynamic> json) => Task(
+_TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => _TaskModel(
   id: json['id'] as String,
   title: json['title'] as String? ?? 'No Title',
   subtitle: json['subtitle'] as String? ?? '',
   isCompleted: json['isCompleted'] as bool? ?? false,
 );
 
-Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
-  'id': instance.id,
-  'title': instance.title,
-  'subtitle': instance.subtitle,
-  'isCompleted': instance.isCompleted,
-};
+Map<String, dynamic> _$TaskModelToJson(_TaskModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'subtitle': instance.subtitle,
+      'isCompleted': instance.isCompleted,
+    };
