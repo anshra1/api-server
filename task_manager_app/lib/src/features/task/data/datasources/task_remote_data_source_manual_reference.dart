@@ -1,24 +1,26 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import '../models/task_model.dart';
+import '../../domain/entities/task.dart';
 
-class ApiService {
-  final Dio _dio = Dio();
+/// ⚠️ REFERENCE ONLY ⚠️
+/// This file shows how we used to write API calls MANUALLY before switching to Retrofit.
+/// Use this to understand what 'api_service.g.dart' is doing behind the scenes.
+class ApiServiceManualReference {
+  final Dio _dio;
 
-  // Determine the Base URL based on the platform
-  static String get baseUrl {
-    return Platform.isAndroid ? 'http://10.0.2.2:3000' : 'http://127.0.0.1:3000';
-  }
+  // Manual dependency injection
+  ApiServiceManualReference(this._dio);
 
+  // Hardcoded endpoint
   static const String tasksEndpoint = '/tasks';
 
-  // 1. GET All Tasks
+  // 1. GET All Tasks (Manual Way)
   Future<List<Task>> getTasks() async {
     try {
-      final url = '$baseUrl$tasksEndpoint';
-      final response = await _dio.get(url);
+      final response = await _dio.get(tasksEndpoint);
       
-      // Convert the List<dynamic> from Dio into a List<Task>
+      // MANUAL PARSING: We had to type this out ourselves.
+      // If we made a typo here, the app would crash.
       final List<dynamic> data = response.data;
       return data.map((json) => Task.fromJson(json)).toList();
     } catch (e) {
@@ -26,12 +28,12 @@ class ApiService {
     }
   }
 
-  // 2. CREATE a Task
+  // 2. CREATE a Task (Manual Way)
   Future<Task> createTask(String title, String subtitle) async {
     try {
-      final url = '$baseUrl$tasksEndpoint';
+      // MANUAL BODY CONSTRUCTION: We had to build the Map ourselves.
       final response = await _dio.post(
-        url,
+        tasksEndpoint,
         data: {
           "title": title,
           "subtitle": subtitle,
@@ -43,10 +45,11 @@ class ApiService {
     }
   }
 
-  // 3. UPDATE a Task (PUT)
+  // 3. UPDATE a Task (Manual Way)
   Future<void> updateTask(Task task) async {
     try {
-      final url = '$baseUrl$tasksEndpoint/${task.id}';
+      // MANUAL URL CONSTRUCTION: '$tasksEndpoint/${task.id}'
+      final url = '$tasksEndpoint/${task.id}';
       await _dio.put(
         url,
         data: {
@@ -60,10 +63,10 @@ class ApiService {
     }
   }
 
-  // 4. DELETE a Task
+  // 4. DELETE a Task (Manual Way)
   Future<void> deleteTask(String id) async {
     try {
-      final url = '$baseUrl$tasksEndpoint/$id';
+      final url = '$tasksEndpoint/$id';
       await _dio.delete(url);
     } catch (e) {
       throw Exception('Failed to delete task: $e');

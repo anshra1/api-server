@@ -1,37 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'cubits/task_cubit.dart';
-import 'cubits/task_state.dart';
-import 'services/api_service.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Task Manager (Cubit)',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.purple,
-        ), // Purple for Bloc/Cubit
-        useMaterial3: true,
-      ),
-      home: BlocProvider(
-        create: (context) => TaskCubit(ApiService())..loadTasks(),
-        child: const TaskListScreen(),
-      ),
-    );
-  }
-}
+import 'package:talker_flutter/talker_flutter.dart';
+import '../cubit/task_cubit.dart';
+import '../cubit/task_state.dart';
 
 class TaskListScreen extends StatelessWidget {
-  const TaskListScreen({super.key});
+  final Talker talker;
+  
+  const TaskListScreen({super.key, required this.talker});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +17,14 @@ class TaskListScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
+            icon: const Icon(Icons.monitor_heart),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => TalkerScreen(talker: talker),
+              ),
+            ),
+          ),
+          IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () => context.read<TaskCubit>().loadTasks(),
           ),
@@ -49,6 +33,7 @@ class TaskListScreen extends StatelessWidget {
       body: BlocConsumer<TaskCubit, TaskState>(
         listener: (context, state) {
           if (state is TaskError) {
+            talker.error('TaskCubit Error', state.message);
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
@@ -90,7 +75,6 @@ class TaskListScreen extends StatelessWidget {
               },
             );
           } else if (state is TaskError) {
-            // If we have an error but no data (e.g. initial load failed)
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -113,8 +97,8 @@ class TaskListScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.read<TaskCubit>().addTask(
-            "Cubit Task ${DateTime.now().second}",
-            "State Management is awesome",
+            "Clean Arch Task ${DateTime.now().second}",
+            "Separation of concerns!",
           );
         },
         child: const Icon(Icons.add),
