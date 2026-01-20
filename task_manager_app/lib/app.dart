@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'src/core/di/injection_container.dart';
 import 'src/core/routing/app_router.dart';
+import 'src/features/auth/presentation/cubit/auth_cubit.dart';
 import 'src/features/task/presentation/cubit/task_cubit.dart';
 
 class App extends StatelessWidget {
@@ -11,6 +12,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (_) => sl<AuthCubit>()..checkAuthStatus(),
+        ),
         BlocProvider(
           create: (_) => sl<TaskCubit>()..loadTasks(),
         ),

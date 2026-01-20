@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../cubit/task_cubit.dart';
 import '../cubit/task_state.dart';
 
@@ -16,6 +17,12 @@ class TaskListScreen extends StatelessWidget {
         title: const Text('Task Manager (Cubit)'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              context.read<AuthCubit>().logout();
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.monitor_heart),
             onPressed: () => Navigator.of(context).push(
