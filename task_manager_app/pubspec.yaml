@@ -23,6 +23,7 @@ dependencies:
   intl: ^0.20.2
   json_annotation: ^4.9.0
   retrofit: ^4.9.2
+  shared_preferences: ^2.5.4
   talker_dio_logger: ^5.1.10
   talker_flutter: ^5.1.10
 

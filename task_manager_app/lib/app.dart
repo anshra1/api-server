@@ -18,41 +18,37 @@ class App extends StatelessWidget {
         BlocProvider(create: (_) => sl<AuthCubit>()..checkAuthStatus()),
         // Load tasks AND stats on init
         BlocProvider(
-            create: (_) => sl<TaskCubit>()
-              ..loadTasks()
-              ..loadStats()),
+          create: (_) => sl<TaskCubit>()
+            ..loadTasks()
+            ..loadStats(),
+        ),
         // Provide UserCubit globally (lazy load is fine, but provider needed)
         BlocProvider(create: (_) => sl<UserCubit>()),
       ],
-      child: Builder(
-        builder: (context) {
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Task Manager (Clean Arch)',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        routerConfig: AppRouter.router,
+        builder: (context, child) {
           return BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
               // Global Auth State Listener
               // When user is logged out (from any source), navigate to login
               if (state is AuthUnauthenticated) {
-                context.go('/login');
+                AppRouter.router.go('/login');
               }
               // When user is authenticated, navigate to tasks
               if (state is AuthAuthenticated) {
-                context.go('/tasks');
+                AppRouter.router.go('/tasks');
                 // Also reload tasks/stats when re-authenticating
                 context.read<TaskCubit>().refresh();
               }
             },
-            child: MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              title: 'Task Manager (Clean Arch)',
-              theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-                useMaterial3: true,
-                // inputDecorationTheme: const InputDecorationTheme(
-                //   border: OutlineInputBorder(),
-                //   filled: true,
-                // ),
-              ),
-              routerConfig: AppRouter.router,
-            ),
+            child: child!,
           );
         },
       ),

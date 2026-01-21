@@ -59,7 +59,9 @@ Future<void> _initCore() async {
 Future<void> _initNetwork() async {
   // Auth Local Data Source is needed for Dio
   sl.registerLazySingleton<AuthLocalDataSource>(() => AuthLocalDataSource(sl()));
-  sl.registerLazySingleton<Dio>(() => DioProvider.createDio(sl(), sl(), sl()));
+  sl.registerLazySingleton<Dio>(
+    () => DioProvider.createDio(talker: sl(), authDataSource: sl(), authEventBus: sl()),
+  );
 }
 
 Future<void> _initAuth() async {

@@ -32,4 +32,15 @@ class ApiEndpoints {
 
   /// Returns task endpoint with ID, e.g., `/tasks/abc-123`
   static String taskById(String id) => '/tasks/$id';
+
+  // ==================
+  // API Keys (Backend-Specific)
+  // ==================
+  // These keys vary by backend. Change them when switching servers.
+
+  /// Key used in refresh token request body
+  static const String refreshTokenRequestKey = 'refreshToken';
+
+  /// Key used in refresh token response for new access token
+  static const String accessTokenResponseKey = 'accessToken';
 }

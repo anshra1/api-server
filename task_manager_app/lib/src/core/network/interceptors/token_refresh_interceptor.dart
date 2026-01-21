@@ -10,7 +10,7 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
   final Dio _dio;
 
   TokenRefreshInterceptor(this._localDataSource, this._authEventBus, this._dio);
-  
+
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     // 1. Check if the error is 401 Unauthorized
@@ -30,11 +30,11 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
 
         final response = await refreshDio.post(
           ApiEndpoints.refreshToken,
-          data: {'refreshToken': refreshToken},
+          data: {ApiEndpoints.refreshTokenRequestKey: refreshToken},
         );
 
         if (response.statusCode == 200) {
-          final newAccessToken = response.data['accessToken'];
+          final newAccessToken = response.data[ApiEndpoints.accessTokenResponseKey];
           await _localDataSource.saveAccessToken(newAccessToken);
 
           print("✅ Token Refreshed Successfully!");

@@ -73,8 +73,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
           BlocBuilder<TaskCubit, TaskState>(
             buildWhen: (previous, current) =>
                 current is TaskLoaded && previous is TaskLoaded
-                    ? previous.stats != current.stats
-                    : true,
+                ? previous.stats != current.stats
+                : true,
             builder: (context, state) {
               if (state is TaskLoaded && state.stats != null) {
                 return _buildStatsHeader(context, state.stats!);
@@ -99,9 +99,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                         },
                       )
                     : null,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 filled: true,
               ),
               onChanged: (value) {
@@ -191,21 +189,21 @@ class _TaskListScreenState extends State<TaskListScreen> {
     );
   }
 
-  Widget _buildStatItem(BuildContext context, String label, String value,
-      [Color? color]) {
+  Widget _buildStatItem(
+    BuildContext context,
+    String label,
+    String value, [
+    Color? color,
+  ]) {
     return Column(
       children: [
         Text(
           value,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold, color: color),
         ),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text(label, style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }
@@ -216,6 +214,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
+          _buildAllTasksChip(context),
+          const SizedBox(width: 8),
           _buildPriorityChip(context, 'High', TaskPriority.high, Colors.red),
           const SizedBox(width: 8),
           _buildPriorityChip(context, 'Medium', TaskPriority.medium, Colors.orange),
@@ -230,8 +230,27 @@ class _TaskListScreenState extends State<TaskListScreen> {
     );
   }
 
+  Widget _buildAllTasksChip(BuildContext context) {
+    final cubit = context.read<TaskCubit>();
+    final isSelected = cubit.currentFilter.priority == null;
+
+    return FilterChip(
+      label: const Text('All Tasks'),
+      selected: isSelected,
+      onSelected: (selected) {
+        if (!isSelected) {
+          cubit.filterByPriority(null);
+        }
+      },
+    );
+  }
+
   Widget _buildPriorityChip(
-      BuildContext context, String label, TaskPriority priority, Color color) {
+    BuildContext context,
+    String label,
+    TaskPriority priority,
+    Color color,
+  ) {
     final cubit = context.read<TaskCubit>();
     final isSelected = cubit.currentFilter.priority == priority;
 
@@ -344,10 +363,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
     return Container(
       width: 8,
       height: 40,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(4),
-      ),
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
     );
   }
 
@@ -381,8 +397,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
             Text(
               'Tap + to add your first task',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
         ],
       ),
@@ -430,10 +446,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Add New Task',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+              Text('Add New Task', style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 16),
               TextField(
                 controller: titleController,
@@ -490,23 +503,25 @@ class _TaskListScreenState extends State<TaskListScreen> {
                   }
                 },
                 icon: const Icon(Icons.calendar_today),
-                label: Text(dueDate != null
-                    ? 'Due: ${_formatDate(dueDate!)}'
-                    : 'Set due date (optional)'),
+                label: Text(
+                  dueDate != null
+                      ? 'Due: ${_formatDate(dueDate!)}'
+                      : 'Set due date (optional)',
+                ),
               ),
               const SizedBox(height: 24),
               FilledButton(
                 onPressed: () {
                   if (titleController.text.trim().isNotEmpty) {
                     context.read<TaskCubit>().addTask(
-                          title: titleController.text.trim(),
-                          subtitle: subtitleController.text.trim().isNotEmpty
-                              ? subtitleController.text.trim()
-                              : null,
-                          priority: priority.name,
-                          dueDate: dueDate,
-                          category: category,
-                        );
+                      title: titleController.text.trim(),
+                      subtitle: subtitleController.text.trim().isNotEmpty
+                          ? subtitleController.text.trim()
+                          : null,
+                      priority: priority.name,
+                      dueDate: dueDate,
+                      category: category,
+                    );
                     Navigator.pop(ctx);
                   }
                 },

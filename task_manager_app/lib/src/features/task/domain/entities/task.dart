@@ -1,8 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 /// Task priority levels
 enum TaskPriority { low, medium, high }
 
 /// Task domain entity
-class Task {
+class Task extends Equatable {
   final String id;
   final String title;
   final String subtitle;
@@ -12,7 +14,7 @@ class Task {
   final String? category;
   final DateTime? createdAt;
 
-  Task({
+  const Task({
     required this.id,
     required this.title,
     required this.subtitle,
@@ -61,11 +63,14 @@ class Task {
   }
 
   @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    return other is Task && other.id == id;
-  }
-
-  @override
-  int get hashCode => id.hashCode;
+  List<Object?> get props => [
+    id,
+    title,
+    subtitle,
+    isCompleted,
+    priority,
+    dueDate,
+    category,
+    createdAt,
+  ];
 }

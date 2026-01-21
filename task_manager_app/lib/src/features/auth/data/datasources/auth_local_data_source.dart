@@ -12,8 +12,15 @@ class AuthLocalDataSource {
     required String accessToken,
     required String refreshToken,
   }) async {
-    await _storage.write(key: _accessTokenKey, value: accessToken);
-    await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    try {
+      print('💾 Saving tokens to secure storage...');
+      await _storage.write(key: _accessTokenKey, value: accessToken);
+      await _storage.write(key: _refreshTokenKey, value: refreshToken);
+      print('✅ Tokens saved successfully.');
+    } catch (e) {
+      print('❌ Failed to save tokens: $e');
+      rethrow;
+    }
   }
 
   Future<void> saveAccessToken(String accessToken) async {
@@ -21,7 +28,18 @@ class AuthLocalDataSource {
   }
 
   Future<String?> getAccessToken() async {
-    return await _storage.read(key: _accessTokenKey);
+    try {
+      final token = await _storage.read(key: _accessTokenKey);
+      if (token == null) {
+        print('⚠️ Access token not found in storage.');
+      } else {
+        // print('🔐 Access token retrieved (length: ${token.length})');
+      }
+      return token;
+    } catch (e) {
+      print('❌ Failed to read access token: $e');
+      return null;
+    }
   }
 
   Future<String?> getRefreshToken() async {

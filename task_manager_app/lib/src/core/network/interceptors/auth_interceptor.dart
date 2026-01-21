@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+
 import '../../../features/auth/data/datasources/auth_local_data_source.dart';
 
 class AuthInterceptor extends Interceptor {
@@ -6,9 +7,10 @@ class AuthInterceptor extends Interceptor {
 
   AuthInterceptor(this._localDataSource);
 
+
   @override
   Future<void> onRequest(
-    RequestOptions options,
+    RequestOptions options, 
     RequestInterceptorHandler handler,
   ) async {
     // 1. Get the token from secure storage
@@ -17,6 +19,9 @@ class AuthInterceptor extends Interceptor {
     // 2. If token exists, add it to headers
     if (token != null) {
       options.headers['Authorization'] = 'Bearer $token';
+      // print('🔑 Added Authorization header to ${options.path}');
+    } else {
+      print('⚠️ No access token available for request: ${options.path}');
     }
 
     // 3. Continue the request

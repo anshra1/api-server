@@ -22,6 +22,17 @@
             "cwd": "${workspaceFolder}/task_manager_app"
         },
         {
+            "name": "Flutter (Linux)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_development.dart",
+            "cwd": "${workspaceFolder}/task_manager_app",
+            "args": [
+                "-d",
+                "linux"
+            ]
+        },
+        {
             "name": "Node.js Server",
             "type": "node",
             "request": "launch",
