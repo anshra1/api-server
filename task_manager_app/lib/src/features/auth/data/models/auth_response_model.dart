@@ -7,7 +7,7 @@ part 'auth_response_model.g.dart';
 
 /// Response model for login and register endpoints
 @freezed
-class AuthResponseModel with _$AuthResponseModel {
+abstract class AuthResponseModel with _$AuthResponseModel {
   const factory AuthResponseModel({
     required String accessToken,
     required String refreshToken,

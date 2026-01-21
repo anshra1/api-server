@@ -5,7 +5,7 @@ part 'paginated_response.g.dart';
 
 /// Pagination information returned by the server
 @freezed
-class PaginationInfo with _$PaginationInfo {
+abstract class PaginationInfo with _$PaginationInfo {
   const factory PaginationInfo({
     @Default(1) int page,
     @Default(20) int limit,
@@ -20,7 +20,7 @@ class PaginationInfo with _$PaginationInfo {
 /// Generic paginated response wrapper
 /// Used to parse paginated API responses
 @Freezed(genericArgumentFactories: true)
-class PaginatedResponse<T> with _$PaginatedResponse<T> {
+abstract class PaginatedResponse<T> with _$PaginatedResponse<T> {
   const factory PaginatedResponse({
     required List<T> items,
     required PaginationInfo pagination,

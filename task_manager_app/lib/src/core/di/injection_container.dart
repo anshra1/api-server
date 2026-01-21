@@ -20,6 +20,7 @@ import '../../features/task/data/repositories/task_repository_impl.dart';
 import '../../features/task/domain/repositories/task_repository.dart';
 import '../../features/task/domain/usecases/add_task_usecase.dart';
 import '../../features/task/domain/usecases/delete_task_usecase.dart';
+import '../../features/task/domain/usecases/get_task_stats_usecase.dart';
 import '../../features/task/domain/usecases/get_tasks_usecase.dart';
 import '../../features/task/domain/usecases/update_task_usecase.dart';
 import '../../features/task/presentation/cubit/task_cubit.dart';
@@ -122,6 +123,7 @@ Future<void> _initTask() async {
   sl.registerLazySingleton(() => AddTaskUseCase(sl()));
   sl.registerLazySingleton(() => UpdateTaskUseCase(sl()));
   sl.registerLazySingleton(() => DeleteTaskUseCase(sl()));
+  sl.registerLazySingleton(() => GetTaskStatsUseCase(sl()));
 
   // Cubits
   sl.registerFactory(
@@ -130,6 +132,7 @@ Future<void> _initTask() async {
       addTaskUseCase: sl(),
       updateTaskUseCase: sl(),
       deleteTaskUseCase: sl(),
+      getTaskStatsUseCase: sl(),
     ),
   );
 }

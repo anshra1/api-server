@@ -1,14 +1,13 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:task_manager_app/src/features/user/domain/entities/user.dart';
 
-import '../../../../user/domain/entities/user.dart';
 
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
 /// User model returned by the server
 @freezed
-class UserModel with _$UserModel {
+abstract class UserModel with _$UserModel {
   const factory UserModel({
     required String id,
     required String email,

@@ -13,7 +13,7 @@ abstract class TaskRemoteDataSource {
 
   /// Get tasks with optional pagination, search, and filters
   @GET('/tasks')
-  Future<Map<String, dynamic>> getTasks({
+  Future<dynamic> getTasks({
     @Query('page') int? page,
     @Query('limit') int? limit,
     @Query('sort') String? sort,
@@ -30,7 +30,7 @@ abstract class TaskRemoteDataSource {
 
   /// Get all unique categories
   @GET('/tasks/categories')
-  Future<Map<String, dynamic>> getCategories();
+  Future<dynamic> getCategories();
 
   /// Get a single task by ID
   @GET('/tasks/{id}')
@@ -53,9 +53,9 @@ abstract class TaskRemoteDataSource {
 
   /// Batch complete/uncomplete tasks
   @POST('/tasks/batch/complete')
-  Future<Map<String, dynamic>> batchComplete(@Body() Map<String, dynamic> body);
+  Future<dynamic> batchComplete(@Body() Map<String, dynamic> body);
 
   /// Batch delete tasks
   @DELETE('/tasks/batch')
-  Future<Map<String, dynamic>> batchDelete(@Body() Map<String, dynamic> body);
+  Future<dynamic> batchDelete(@Body() Map<String, dynamic> body);
 }

@@ -4,6 +4,7 @@ import '../../domain/entities/task.dart';
 import '../../domain/entities/task_filter.dart';
 import '../../domain/usecases/add_task_usecase.dart';
 import '../../domain/usecases/delete_task_usecase.dart';
+import '../../domain/usecases/get_task_stats_usecase.dart';
 import '../../domain/usecases/get_tasks_usecase.dart';
 import '../../domain/usecases/update_task_usecase.dart';
 import 'task_state.dart';
@@ -13,6 +14,7 @@ class TaskCubit extends Cubit<TaskState> {
   final AddTaskUseCase addTaskUseCase;
   final UpdateTaskUseCase updateTaskUseCase;
   final DeleteTaskUseCase deleteTaskUseCase;
+  final GetTaskStatsUseCase getTaskStatsUseCase;
 
   TaskFilter _currentFilter = const TaskFilter();
 
@@ -21,6 +23,7 @@ class TaskCubit extends Cubit<TaskState> {
     required this.addTaskUseCase,
     required this.updateTaskUseCase,
     required this.deleteTaskUseCase,
+    required this.getTaskStatsUseCase,
   }) : super(TaskInitial());
 
   /// Current filter
@@ -37,9 +40,16 @@ class TaskCubit extends Cubit<TaskState> {
 
     emit(TaskLoading());
 
-    final result = await getTasks.call(filter: _currentFilter);
+    // Fetch tasks
+    final taskResult = await getTasks.call(filter: _currentFilter);
+    // Fetch stats concurrently if not loading more (i.e. first page or refresh)
+    // We only need global stats, not filtered stats for the dashboard at top
+    // Ideally stats should be its own call, but we can bundle it here for simplicity
+    // Or we can let the UI trigger it separately
 
-    result.fold(
+    // For now, let's just emit tasks. We will add a separate method for stats.
+
+    taskResult.fold(
       (failure) => emit(TaskError(failure.message)),
       (paginatedTasks) {
         emit(TaskLoaded(
@@ -50,6 +60,26 @@ class TaskCubit extends Cubit<TaskState> {
         ));
       },
     );
+  }
+
+  /// Load global task statistics
+  Future<void> loadStats() async {
+    final currentState = state;
+    // We can only attach stats if we are in loaded state (or we can emit a separate state if needed)
+    // But since stats are usually shown with the list, let's attach to TaskLoaded
+
+    if (currentState is TaskLoaded) {
+      final result = await getTaskStatsUseCase.call();
+      result.fold(
+        (failure) {
+          // Silently fail or log? Stats failure shouldn't block the list.
+          // Maybe show a snackbar via listener but we don't have a specific state for "StatsError"
+        },
+        (stats) {
+          emit(currentState.copyWith(stats: stats));
+        },
+      );
+    }
   }
 
   /// Load more tasks (pagination)
@@ -83,6 +113,7 @@ class TaskCubit extends Cubit<TaskState> {
           pagination: paginatedTasks.pagination,
           filter: _currentFilter,
           hasMore: paginatedTasks.hasMore,
+          stats: currentState.stats, // Preserve stats
         ));
       },
     );
@@ -90,7 +121,9 @@ class TaskCubit extends Cubit<TaskState> {
 
   /// Refresh tasks (reload from first page)
   Future<void> refresh() async {
+    // When refreshing, we should probably re-fetch stats too if we want them fresh
     await loadTasks(refresh: true);
+    await loadStats();
   }
 
   /// Search tasks
@@ -191,6 +224,14 @@ class TaskCubit extends Cubit<TaskState> {
             .tasks
             .map((t) => t.id == updatedTask.id ? updatedTask : t)
             .toList();
+
+        // If task completion changed, refreshing stats might be good,
+        // but let's avoid too many requests for now or do it silently.
+        // For accurate stats, we should re-fetch.
+        if (task.isCompleted != updatedTask.isCompleted) {
+          loadStats();
+        }
+
         emit((state as TaskLoaded).copyWith(tasks: serverUpdatedList));
       },
     );
@@ -199,6 +240,8 @@ class TaskCubit extends Cubit<TaskState> {
   /// Toggle task completion
   Future<void> toggleTaskCompletion(Task task) async {
     await updateTask(task.copyWith(isCompleted: !task.isCompleted));
+    // Load stats after toggle to update "Completed" count
+    loadStats();
   }
 
   /// Delete a task
@@ -224,6 +267,7 @@ class TaskCubit extends Cubit<TaskState> {
       },
       (_) {
         // Success, task already removed optimistically
+        loadStats(); // Update stats
       },
     );
   }

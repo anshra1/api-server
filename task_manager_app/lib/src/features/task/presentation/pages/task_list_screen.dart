@@ -5,6 +5,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../domain/entities/task.dart';
+import '../../domain/entities/task_stats.dart';
 import '../cubit/task_cubit.dart';
 import '../cubit/task_state.dart';
 
@@ -68,6 +69,19 @@ class _TaskListScreenState extends State<TaskListScreen> {
       ),
       body: Column(
         children: [
+          // Stats Header
+          BlocBuilder<TaskCubit, TaskState>(
+            buildWhen: (previous, current) =>
+                current is TaskLoaded && previous is TaskLoaded
+                    ? previous.stats != current.stats
+                    : true,
+            builder: (context, state) {
+              if (state is TaskLoaded && state.stats != null) {
+                return _buildStatsHeader(context, state.stats!);
+              }
+              return const SizedBox.shrink();
+            },
+          ),
           // Search bar
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -158,6 +172,41 @@ class _TaskListScreenState extends State<TaskListScreen> {
         icon: const Icon(Icons.add),
         label: const Text('Add Task'),
       ),
+    );
+  }
+
+  Widget _buildStatsHeader(BuildContext context, TaskStats stats) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+      color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildStatItem(context, 'Total', stats.total.toString()),
+          _buildStatItem(context, 'Completed', stats.completed.toString(), Colors.green),
+          _buildStatItem(context, 'Pending', stats.pending.toString(), Colors.orange),
+          _buildStatItem(context, 'Overdue', stats.overdue.toString(), Colors.red),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatItem(BuildContext context, String label, String value,
+      [Color? color]) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+        ),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      ],
     );
   }
 

@@ -7,7 +7,7 @@ part 'task_stats_model.g.dart';
 
 /// Task statistics model from API response
 @freezed
-class TaskStatsModel with _$TaskStatsModel {
+abstract class TaskStatsModel with _$TaskStatsModel {
   const factory TaskStatsModel({
     @Default(0) int total,
     @Default(0) int completed,
