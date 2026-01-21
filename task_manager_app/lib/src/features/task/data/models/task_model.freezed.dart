@@ -14,267 +14,543 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$TaskModel {
+  String get id;
+  String get title;
+  String get subtitle;
+  bool get isCompleted;
+  String get priority; // 'low', 'medium', 'high'
+  String? get dueDate; // ISO 8601 date string
+  String? get category;
+  String? get createdAt;
+  String? get updatedAt;
+  String? get userId;
 
- String get id; String get title; String get subtitle; bool get isCompleted;
-/// Create a copy of TaskModel
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$TaskModelCopyWith<TaskModel> get copyWith => _$TaskModelCopyWithImpl<TaskModel>(this as TaskModel, _$identity);
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $TaskModelCopyWith<TaskModel> get copyWith =>
+      _$TaskModelCopyWithImpl<TaskModel>(this as TaskModel, _$identity);
 
   /// Serializes this TaskModel to a JSON map.
   Map<String, dynamic> toJson();
 
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is TaskModel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.subtitle, subtitle) ||
+                other.subtitle == subtitle) &&
+            (identical(other.isCompleted, isCompleted) ||
+                other.isCompleted == isCompleted) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority) &&
+            (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.userId, userId) || other.userId == userId));
+  }
 
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted));
-}
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, title, subtitle, isCompleted,
+      priority, dueDate, category, createdAt, updatedAt, userId);
 
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,title,subtitle,isCompleted);
-
-@override
-String toString() {
-  return 'TaskModel(id: $id, title: $title, subtitle: $subtitle, isCompleted: $isCompleted)';
-}
-
-
+  @override
+  String toString() {
+    return 'TaskModel(id: $id, title: $title, subtitle: $subtitle, isCompleted: $isCompleted, priority: $priority, dueDate: $dueDate, category: $category, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId)';
+  }
 }
 
 /// @nodoc
-abstract mixin class $TaskModelCopyWith<$Res>  {
-  factory $TaskModelCopyWith(TaskModel value, $Res Function(TaskModel) _then) = _$TaskModelCopyWithImpl;
-@useResult
-$Res call({
- String id, String title, String subtitle, bool isCompleted
-});
-
-
-
-
+abstract mixin class $TaskModelCopyWith<$Res> {
+  factory $TaskModelCopyWith(TaskModel value, $Res Function(TaskModel) _then) =
+      _$TaskModelCopyWithImpl;
+  @useResult
+  $Res call(
+      {String id,
+      String title,
+      String subtitle,
+      bool isCompleted,
+      String priority,
+      String? dueDate,
+      String? category,
+      String? createdAt,
+      String? updatedAt,
+      String? userId});
 }
+
 /// @nodoc
-class _$TaskModelCopyWithImpl<$Res>
-    implements $TaskModelCopyWith<$Res> {
+class _$TaskModelCopyWithImpl<$Res> implements $TaskModelCopyWith<$Res> {
   _$TaskModelCopyWithImpl(this._self, this._then);
 
   final TaskModel _self;
   final $Res Function(TaskModel) _then;
 
-/// Create a copy of TaskModel
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? subtitle = null,Object? isCompleted = null,}) {
-  return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,subtitle: null == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
-as String,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
-as bool,
-  ));
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? subtitle = null,
+    Object? isCompleted = null,
+    Object? priority = null,
+    Object? dueDate = freezed,
+    Object? category = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? userId = freezed,
+  }) {
+    return _then(_self.copyWith(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      subtitle: null == subtitle
+          ? _self.subtitle
+          : subtitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      isCompleted: null == isCompleted
+          ? _self.isCompleted
+          : isCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      priority: null == priority
+          ? _self.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as String,
+      dueDate: freezed == dueDate
+          ? _self.dueDate
+          : dueDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      category: freezed == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updatedAt: freezed == updatedAt
+          ? _self.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
-
-}
-
 
 /// Adds pattern-matching-related methods to [TaskModel].
 extension TaskModelPatterns on TaskModel {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
+  /// A variant of `map` that fallback to returning `orElse`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TaskModel value)?  $default,{required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case _TaskModel() when $default != null:
-return $default(_that);case _:
-  return orElse();
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>(
+    TResult Function(_TaskModel value)? $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _TaskModel() when $default != null:
+        return $default(_that);
+      case _:
+        return orElse();
+    }
+  }
 
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// Callbacks receives the raw object, upcasted.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case final Subclass2 value:
+  ///     return ...;
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TaskModel value)  $default,){
-final _that = this;
-switch (_that) {
-case _TaskModel():
-return $default(_that);}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>(
+    TResult Function(_TaskModel value) $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _TaskModel():
+        return $default(_that);
+    }
+  }
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TaskModel value)?  $default,){
-final _that = this;
-switch (_that) {
-case _TaskModel() when $default != null:
-return $default(_that);case _:
-  return null;
+  /// A variant of `map` that fallback to returning `null`.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case final Subclass value:
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
 
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>(
+    TResult? Function(_TaskModel value)? $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _TaskModel() when $default != null:
+        return $default(_that);
+      case _:
+        return null;
+    }
+  }
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String subtitle,  bool isCompleted)?  $default,{required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case _TaskModel() when $default != null:
-return $default(_that.id,_that.title,_that.subtitle,_that.isCompleted);case _:
-  return orElse();
+  /// A variant of `when` that fallback to an `orElse` callback.
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return orElse();
+  /// }
+  /// ```
 
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>(
+    TResult Function(
+            String id,
+            String title,
+            String subtitle,
+            bool isCompleted,
+            String priority,
+            String? dueDate,
+            String? category,
+            String? createdAt,
+            String? updatedAt,
+            String? userId)?
+        $default, {
+    required TResult orElse(),
+  }) {
+    final _that = this;
+    switch (_that) {
+      case _TaskModel() when $default != null:
+        return $default(
+            _that.id,
+            _that.title,
+            _that.subtitle,
+            _that.isCompleted,
+            _that.priority,
+            _that.dueDate,
+            _that.category,
+            _that.createdAt,
+            _that.updatedAt,
+            _that.userId);
+      case _:
+        return orElse();
+    }
+  }
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String subtitle,  bool isCompleted)  $default,) {final _that = this;
-switch (_that) {
-case _TaskModel():
-return $default(_that.id,_that.title,_that.subtitle,_that.isCompleted);}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
+  /// A `switch`-like method, using callbacks.
+  ///
+  /// As opposed to `map`, this offers destructuring.
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case Subclass2(:final field2):
+  ///     return ...;
+  /// }
+  /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String subtitle,  bool isCompleted)?  $default,) {final _that = this;
-switch (_that) {
-case _TaskModel() when $default != null:
-return $default(_that.id,_that.title,_that.subtitle,_that.isCompleted);case _:
-  return null;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>(
+    TResult Function(
+            String id,
+            String title,
+            String subtitle,
+            bool isCompleted,
+            String priority,
+            String? dueDate,
+            String? category,
+            String? createdAt,
+            String? updatedAt,
+            String? userId)
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _TaskModel():
+        return $default(
+            _that.id,
+            _that.title,
+            _that.subtitle,
+            _that.isCompleted,
+            _that.priority,
+            _that.dueDate,
+            _that.category,
+            _that.createdAt,
+            _that.updatedAt,
+            _that.userId);
+    }
+  }
 
-}
-}
+  /// A variant of `when` that fallback to returning `null`
+  ///
+  /// It is equivalent to doing:
+  /// ```dart
+  /// switch (sealedClass) {
+  ///   case Subclass(:final field):
+  ///     return ...;
+  ///   case _:
+  ///     return null;
+  /// }
+  /// ```
 
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>(
+    TResult? Function(
+            String id,
+            String title,
+            String subtitle,
+            bool isCompleted,
+            String priority,
+            String? dueDate,
+            String? category,
+            String? createdAt,
+            String? updatedAt,
+            String? userId)?
+        $default,
+  ) {
+    final _that = this;
+    switch (_that) {
+      case _TaskModel() when $default != null:
+        return $default(
+            _that.id,
+            _that.title,
+            _that.subtitle,
+            _that.isCompleted,
+            _that.priority,
+            _that.dueDate,
+            _that.category,
+            _that.createdAt,
+            _that.updatedAt,
+            _that.userId);
+      case _:
+        return null;
+    }
+  }
 }
 
 /// @nodoc
 @JsonSerializable()
-
 class _TaskModel implements TaskModel {
-  const _TaskModel({required this.id, this.title = 'No Title', this.subtitle = '', this.isCompleted = false});
-  factory _TaskModel.fromJson(Map<String, dynamic> json) => _$TaskModelFromJson(json);
+  const _TaskModel(
+      {required this.id,
+      this.title = 'No Title',
+      this.subtitle = '',
+      this.isCompleted = false,
+      this.priority = 'medium',
+      this.dueDate,
+      this.category,
+      this.createdAt,
+      this.updatedAt,
+      this.userId});
+  factory _TaskModel.fromJson(Map<String, dynamic> json) =>
+      _$TaskModelFromJson(json);
 
-@override final  String id;
-@override@JsonKey() final  String title;
-@override@JsonKey() final  String subtitle;
-@override@JsonKey() final  bool isCompleted;
+  @override
+  final String id;
+  @override
+  @JsonKey()
+  final String title;
+  @override
+  @JsonKey()
+  final String subtitle;
+  @override
+  @JsonKey()
+  final bool isCompleted;
+  @override
+  @JsonKey()
+  final String priority;
+// 'low', 'medium', 'high'
+  @override
+  final String? dueDate;
+// ISO 8601 date string
+  @override
+  final String? category;
+  @override
+  final String? createdAt;
+  @override
+  final String? updatedAt;
+  @override
+  final String? userId;
 
-/// Create a copy of TaskModel
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$TaskModelCopyWith<_TaskModel> get copyWith => __$TaskModelCopyWithImpl<_TaskModel>(this, _$identity);
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$TaskModelCopyWith<_TaskModel> get copyWith =>
+      __$TaskModelCopyWithImpl<_TaskModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$TaskModelToJson(this, );
-}
+  @override
+  Map<String, dynamic> toJson() {
+    return _$TaskModelToJson(
+      this,
+    );
+  }
 
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskModel&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.subtitle, subtitle) || other.subtitle == subtitle)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted));
-}
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _TaskModel &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.subtitle, subtitle) ||
+                other.subtitle == subtitle) &&
+            (identical(other.isCompleted, isCompleted) ||
+                other.isCompleted == isCompleted) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority) &&
+            (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
+            (identical(other.category, category) ||
+                other.category == category) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.userId, userId) || other.userId == userId));
+  }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id,title,subtitle,isCompleted);
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, id, title, subtitle, isCompleted,
+      priority, dueDate, category, createdAt, updatedAt, userId);
 
-@override
-String toString() {
-  return 'TaskModel(id: $id, title: $title, subtitle: $subtitle, isCompleted: $isCompleted)';
-}
-
-
+  @override
+  String toString() {
+    return 'TaskModel(id: $id, title: $title, subtitle: $subtitle, isCompleted: $isCompleted, priority: $priority, dueDate: $dueDate, category: $category, createdAt: $createdAt, updatedAt: $updatedAt, userId: $userId)';
+  }
 }
 
 /// @nodoc
-abstract mixin class _$TaskModelCopyWith<$Res> implements $TaskModelCopyWith<$Res> {
-  factory _$TaskModelCopyWith(_TaskModel value, $Res Function(_TaskModel) _then) = __$TaskModelCopyWithImpl;
-@override @useResult
-$Res call({
- String id, String title, String subtitle, bool isCompleted
-});
-
-
-
-
+abstract mixin class _$TaskModelCopyWith<$Res>
+    implements $TaskModelCopyWith<$Res> {
+  factory _$TaskModelCopyWith(
+          _TaskModel value, $Res Function(_TaskModel) _then) =
+      __$TaskModelCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {String id,
+      String title,
+      String subtitle,
+      bool isCompleted,
+      String priority,
+      String? dueDate,
+      String? category,
+      String? createdAt,
+      String? updatedAt,
+      String? userId});
 }
+
 /// @nodoc
-class __$TaskModelCopyWithImpl<$Res>
-    implements _$TaskModelCopyWith<$Res> {
+class __$TaskModelCopyWithImpl<$Res> implements _$TaskModelCopyWith<$Res> {
   __$TaskModelCopyWithImpl(this._self, this._then);
 
   final _TaskModel _self;
   final $Res Function(_TaskModel) _then;
 
-/// Create a copy of TaskModel
-/// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? subtitle = null,Object? isCompleted = null,}) {
-  return _then(_TaskModel(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,subtitle: null == subtitle ? _self.subtitle : subtitle // ignore: cast_nullable_to_non_nullable
-as String,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
-as bool,
-  ));
-}
-
-
+  /// Create a copy of TaskModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? subtitle = null,
+    Object? isCompleted = null,
+    Object? priority = null,
+    Object? dueDate = freezed,
+    Object? category = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? userId = freezed,
+  }) {
+    return _then(_TaskModel(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      title: null == title
+          ? _self.title
+          : title // ignore: cast_nullable_to_non_nullable
+              as String,
+      subtitle: null == subtitle
+          ? _self.subtitle
+          : subtitle // ignore: cast_nullable_to_non_nullable
+              as String,
+      isCompleted: null == isCompleted
+          ? _self.isCompleted
+          : isCompleted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      priority: null == priority
+          ? _self.priority
+          : priority // ignore: cast_nullable_to_non_nullable
+              as String,
+      dueDate: freezed == dueDate
+          ? _self.dueDate
+          : dueDate // ignore: cast_nullable_to_non_nullable
+              as String?,
+      category: freezed == category
+          ? _self.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _self.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updatedAt: freezed == updatedAt
+          ? _self.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userId: freezed == userId
+          ? _self.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 // dart format on

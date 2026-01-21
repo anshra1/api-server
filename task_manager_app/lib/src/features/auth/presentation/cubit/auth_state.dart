@@ -23,3 +23,5 @@ final class AuthError extends AuthState {
   @override
   List<Object> get props => [message];
 }
+
+final class AuthPasswordChanged extends AuthState {}

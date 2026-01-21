@@ -8,15 +8,27 @@ class ApiEndpoints {
   // ==================
   // Auth Endpoints
   // ==================
+  static const String register = '/auth/register';
   static const String login = '/auth/login';
   static const String googleLogin = '/auth/google';
   static const String refreshToken = '/auth/refresh-token';
   static const String logout = '/auth/logout';
+  static const String changePassword = '/auth/change-password';
+
+  // ==================
+  // User Endpoints
+  // ==================
+  static const String userProfile = '/users/me';
+  static const String userStats = '/users/me/stats';
 
   // ==================
   // Task Endpoints
   // ==================
   static const String tasks = '/tasks';
+  static const String taskStats = '/tasks/stats';
+  static const String taskCategories = '/tasks/categories';
+  static const String taskBatchComplete = '/tasks/batch/complete';
+  static const String taskBatchDelete = '/tasks/batch';
 
   /// Returns task endpoint with ID, e.g., `/tasks/abc-123`
   static String taskById(String id) => '/tasks/$id';

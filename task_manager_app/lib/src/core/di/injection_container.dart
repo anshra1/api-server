@@ -9,9 +9,11 @@ import '../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
+import '../../features/auth/domain/usecases/change_password_usecase.dart';
 import '../../features/auth/domain/usecases/check_auth_status_usecase.dart';
 import '../../features/auth/domain/usecases/login_usecase.dart';
 import '../../features/auth/domain/usecases/logout_usecase.dart';
+import '../../features/auth/domain/usecases/register_usecase.dart';
 import '../../features/auth/presentation/cubit/auth_cubit.dart';
 import '../../features/task/data/datasources/task_remote_data_source.dart';
 import '../../features/task/data/repositories/task_repository_impl.dart';
@@ -21,6 +23,13 @@ import '../../features/task/domain/usecases/delete_task_usecase.dart';
 import '../../features/task/domain/usecases/get_tasks_usecase.dart';
 import '../../features/task/domain/usecases/update_task_usecase.dart';
 import '../../features/task/presentation/cubit/task_cubit.dart';
+import '../../features/user/data/datasources/user_remote_data_source.dart';
+import '../../features/user/data/repositories/user_repository_impl.dart';
+import '../../features/user/domain/repositories/user_repository.dart';
+import '../../features/user/domain/usecases/delete_account_usecase.dart';
+import '../../features/user/domain/usecases/get_profile_usecase.dart';
+import '../../features/user/domain/usecases/update_profile_usecase.dart';
+import '../../features/user/presentation/cubit/user_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -33,6 +42,7 @@ Future<void> init() async {
 
   // 3. Features
   await _initAuth();
+  await _initUser();
   await _initTask();
 }
 
@@ -54,21 +64,48 @@ Future<void> _initNetwork() async {
 Future<void> _initAuth() async {
   // Data Sources
   sl.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl(sl()));
+
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl(), sl()));
 
   // Use Cases
   sl.registerLazySingleton(() => LoginUseCase(sl()));
+  sl.registerLazySingleton(() => RegisterUseCase(sl()));
   sl.registerLazySingleton(() => CheckAuthStatusUseCase(sl()));
   sl.registerLazySingleton(() => LogoutUseCase(sl()));
+  sl.registerLazySingleton(() => ChangePasswordUseCase(sl()));
 
   // Cubits
   sl.registerLazySingleton(
     () => AuthCubit(
       loginUseCase: sl(),
+      registerUseCase: sl(),
       checkAuthStatusUseCase: sl(),
       logoutUseCase: sl(),
+      changePasswordUseCase: sl(),
       authEventBus: sl(),
+    ),
+  );
+}
+
+Future<void> _initUser() async {
+  // Data Sources
+  sl.registerLazySingleton<UserRemoteDataSource>(() => UserRemoteDataSourceImpl(sl()));
+
+  // Repositories
+  sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(sl()));
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetProfileUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateProfileUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteAccountUseCase(sl()));
+
+  // Cubits
+  sl.registerFactory(
+    () => UserCubit(
+      getProfileUseCase: sl(),
+      updateProfileUseCase: sl(),
+      deleteAccountUseCase: sl(),
     ),
   );
 }
