@@ -40,3 +40,22 @@ class UnknownFailure extends Failure {
   const UnknownFailure({super.message = 'An unexpected error occurred'})
     : super(title: 'Unknown Error');
 }
+
+/// Represents a network/HTTP failure with retry capability info.
+class NetworkFailure extends Failure {
+  const NetworkFailure({
+    required super.message,
+    super.code,
+    this.statusCode,
+    this.isRetryable = false,
+  }) : super(title: 'Network Error');
+
+  /// HTTP status code (if applicable)
+  final int? statusCode;
+
+  /// Whether the UI should show a "Retry" button
+  final bool isRetryable;
+
+  @override
+  List<Object?> get props => [...super.props, statusCode, isRetryable];
+}

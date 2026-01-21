@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/common/typedef.dart';
 import '../../../../core/error/failure.dart';
+import '../../../../core/network/dio_error_mapper.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
@@ -16,7 +17,11 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   ResultFuture<void> register(String email, String password, String name) async {
     try {
-      final result = await _remoteDataSource.register(email, password, name);
+      final result = await _remoteDataSource.register({
+        'email': email,
+        'password': password,
+        'name': name,
+      });
 
       // Save tokens to secure storage
       await _localDataSource.saveTokens(
@@ -26,7 +31,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return const Right(null);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -35,7 +40,10 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   ResultFuture<void> login(String email, String password) async {
     try {
-      final result = await _remoteDataSource.login(email, password);
+      final result = await _remoteDataSource.login({
+        'email': email,
+        'password': password,
+      });
 
       // Save tokens to secure storage
       await _localDataSource.saveTokens(
@@ -45,7 +53,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return const Right(null);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -77,41 +85,17 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   ResultFuture<void> changePassword(String currentPassword, String newPassword) async {
     try {
-      await _remoteDataSource.changePassword(currentPassword, newPassword);
+      await _remoteDataSource.changePassword({
+        'currentPassword': currentPassword,
+        'newPassword': newPassword,
+      });
       // Clear tokens after password change (user needs to re-login)
       await _localDataSource.clearTokens();
       return const Right(null);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
-  }
-
-  /// Handle Dio errors and extract server error messages
-  Failure _handleDioError(DioException e) {
-    String message = 'Unknown Server Error';
-
-    // Try to extract error message from server response
-    if (e.response?.data != null) {
-      final data = e.response!.data;
-      if (data is Map<String, dynamic>) {
-        // Handle standardized error format: { error: { message: "..." } }
-        if (data['error'] is Map<String, dynamic>) {
-          message = data['error']['message'] ?? message;
-        } else if (data['error'] is String) {
-          message = data['error'];
-        } else if (data['message'] is String) {
-          message = data['message'];
-        }
-      }
-    } else {
-      message = e.message ?? message;
-    }
-
-    return ServerFailure(
-      message: message,
-      code: e.response?.statusCode?.toString(),
-    );
   }
 }

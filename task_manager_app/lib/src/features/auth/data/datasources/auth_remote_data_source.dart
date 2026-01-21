@@ -1,64 +1,24 @@
 import 'package:dio/dio.dart';
+import 'package:retrofit/retrofit.dart';
 
-import '../../../../core/constants/api_endpoints.dart';
 import '../models/auth_response_model.dart';
 
-/// Abstract interface for auth remote data source
+part 'auth_remote_data_source.g.dart';
+
+/// Retrofit client for auth API
+@RestApi()
 abstract class AuthRemoteDataSource {
+  factory AuthRemoteDataSource(Dio dio, {String baseUrl}) = _AuthRemoteDataSource;
+
   /// Register a new user
-  Future<AuthResponseModel> register(String email, String password, String name);
+  @POST('/auth/register')
+  Future<AuthResponseModel> register(@Body() Map<String, dynamic> body);
 
   /// Login with email and password
-  Future<AuthResponseModel> login(String email, String password);
+  @POST('/auth/login')
+  Future<AuthResponseModel> login(@Body() Map<String, dynamic> body);
 
   /// Change password (requires authenticated Dio)
-  Future<void> changePassword(String currentPassword, String newPassword);
-}
-
-/// Implementation of auth remote data source
-class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
-  final Dio _dio;
-
-  AuthRemoteDataSourceImpl(this._dio);
-
-  @override
-  Future<AuthResponseModel> register(String email, String password, String name) async {
-    final response = await _dio.post(
-      ApiEndpoints.register,
-      data: {
-        'email': email,
-        'password': password,
-        'name': name,
-      },
-    );
-
-    return AuthResponseModel.fromJson(response.data);
-  }
-
-  @override
-  Future<AuthResponseModel> login(String email, String password) async {
-    // Note: We use the injected Dio instance.
-    // For Login, the server validates email/password and returns tokens.
-
-    final response = await _dio.post(
-      ApiEndpoints.login,
-      data: {
-        'email': email,
-        'password': password,
-      },
-    );
-
-    return AuthResponseModel.fromJson(response.data);
-  }
-
-  @override
-  Future<void> changePassword(String currentPassword, String newPassword) async {
-    await _dio.put(
-      ApiEndpoints.changePassword,
-      data: {
-        'currentPassword': currentPassword,
-        'newPassword': newPassword,
-      },
-    );
-  }
+  @PUT('/auth/change-password')
+  Future<void> changePassword(@Body() Map<String, dynamic> body);
 }

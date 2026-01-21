@@ -4,6 +4,7 @@ import 'package:fpdart/fpdart.dart' hide Task;
 import '../../../../core/common/paginated_response.dart';
 import '../../../../core/common/typedef.dart';
 import '../../../../core/error/failure.dart';
+import '../../../../core/network/dio_error_mapper.dart';
 import '../../domain/entities/paginated_tasks.dart';
 import '../../domain/entities/task.dart';
 import '../../domain/entities/task_filter.dart';
@@ -52,7 +53,7 @@ class TaskRepositoryImpl implements TaskRepository {
 
       return Right(PaginatedTasks(tasks: tasks, pagination: pagination));
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -64,7 +65,7 @@ class TaskRepositoryImpl implements TaskRepository {
       final result = await remoteDataSource.getTaskStats();
       return Right(result.toEntity());
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -79,7 +80,7 @@ class TaskRepositoryImpl implements TaskRepository {
           .toList();
       return Right(categories);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -105,7 +106,7 @@ class TaskRepositoryImpl implements TaskRepository {
       final result = await remoteDataSource.createTask(body);
       return Right(result.toEntity());
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -118,7 +119,7 @@ class TaskRepositoryImpl implements TaskRepository {
       final result = await remoteDataSource.updateTask(task.id, body);
       return Right(result.toEntity());
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -130,7 +131,7 @@ class TaskRepositoryImpl implements TaskRepository {
       await remoteDataSource.deleteTask(id);
       return const Right(null);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -145,7 +146,7 @@ class TaskRepositoryImpl implements TaskRepository {
       });
       return Right(result['updated'] as int? ?? 0);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
@@ -157,34 +158,9 @@ class TaskRepositoryImpl implements TaskRepository {
       final result = await remoteDataSource.batchDelete({'ids': ids});
       return Right(result['deleted'] as int? ?? 0);
     } on DioException catch (e) {
-      return Left(_handleDioError(e));
+      return Left(DioErrorMapper.toFailure(e));
     } catch (e) {
       return Left(UnknownFailure(message: e.toString()));
     }
-  }
-
-  /// Handle Dio errors and extract server error messages
-  Failure _handleDioError(DioException e) {
-    String message = 'Unknown Server Error';
-
-    if (e.response?.data != null) {
-      final data = e.response!.data;
-      if (data is Map<String, dynamic>) {
-        if (data['error'] is Map<String, dynamic>) {
-          message = data['error']['message'] ?? message;
-        } else if (data['error'] is String) {
-          message = data['error'];
-        } else if (data['message'] is String) {
-          message = data['message'];
-        }
-      }
-    } else {
-      message = e.message ?? message;
-    }
-
-    return ServerFailure(
-      message: message,
-      code: e.response?.statusCode?.toString(),
-    );
   }
 }

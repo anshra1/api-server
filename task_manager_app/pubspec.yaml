@@ -26,6 +26,7 @@ dependencies:
   shared_preferences: ^2.5.4
   talker_dio_logger: ^5.1.10
   talker_flutter: ^5.1.10
+  uuid: ^4.5.2
 
 dev_dependencies:
   build_runner: ^2.10.5

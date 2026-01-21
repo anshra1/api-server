@@ -6,6 +6,12 @@ class ApiEndpoints {
   ApiEndpoints._();
 
   // ==================
+  // Base URLs
+  // ==================
+  static const String baseUrlAndroid = 'http://10.0.2.2:3000';
+  static const String baseUrlLocal = 'http://127.0.0.1:3000';
+
+  // ==================
   // Auth Endpoints
   // ==================
   static const String register = '/auth/register';
@@ -29,6 +35,7 @@ class ApiEndpoints {
   static const String taskCategories = '/tasks/categories';
   static const String taskBatchComplete = '/tasks/batch/complete';
   static const String taskBatchDelete = '/tasks/batch';
+  static const String taskByIdPattern = '/tasks/{id}';
 
   /// Returns task endpoint with ID, e.g., `/tasks/abc-123`
   static String taskById(String id) => '/tasks/$id';
