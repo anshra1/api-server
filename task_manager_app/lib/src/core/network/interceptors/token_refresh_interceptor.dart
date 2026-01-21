@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+
 import '../../../features/auth/data/datasources/auth_local_data_source.dart';
+import '../../constants/api_endpoints.dart';
 import '../auth_event_bus.dart';
 
 class TokenRefreshInterceptor extends QueuedInterceptor {
@@ -8,9 +10,7 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
   final Dio _dio;
 
   TokenRefreshInterceptor(this._localDataSource, this._authEventBus, this._dio);
-  @override
   
-
   @override
   Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     // 1. Check if the error is 401 Unauthorized
@@ -25,11 +25,11 @@ class TokenRefreshInterceptor extends QueuedInterceptor {
           return handler.next(err);
         }
 
-        final refreshDio = Dio(); 
+        final refreshDio = Dio();
         refreshDio.options.baseUrl = _dio.options.baseUrl; // Use same base URL
-        
+
         final response = await refreshDio.post(
-          '/auth/refresh-token',
+          ApiEndpoints.refreshToken,
           data: {'refreshToken': refreshToken},
         );
 

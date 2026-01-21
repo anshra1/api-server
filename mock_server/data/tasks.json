@@ -1,0 +1,29 @@
+[
+  {
+    "id": "776e3ed9-5d98-4e6f-8309-5c058a3bbe20",
+    "userId": "a9f34d86-64da-4e87-a2be-d6e9b4d6e1f0",
+    "title": "Test Task",
+    "description": "Created immediately after login",
+    "isCompleted": false,
+    "createdAt": "2026-01-20T14:45:33.075Z",
+    "updatedAt": "2026-01-20T14:45:33.075Z"
+  },
+  {
+    "id": "ba03f5b5-1ca2-4b3a-a867-c173f2a260ae",
+    "userId": "6e0bb041-a4fd-40b8-a8ab-1d4e663998f8",
+    "title": "Clean Arch Task 33",
+    "description": "",
+    "isCompleted": false,
+    "createdAt": "2026-01-20T15:06:33.915Z",
+    "updatedAt": "2026-01-20T15:07:36.789Z"
+  },
+  {
+    "id": "1d4066ce-a0c7-480a-8bb1-3e39059cb0ae",
+    "userId": "6e0bb041-a4fd-40b8-a8ab-1d4e663998f8",
+    "title": "Clean Arch Task 41",
+    "description": "",
+    "isCompleted": false,
+    "createdAt": "2026-01-20T15:08:41.103Z",
+    "updatedAt": "2026-01-20T15:08:41.103Z"
+  }
+]

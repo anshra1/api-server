@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
 import 'src/core/di/injection_container.dart';
 import 'src/core/routing/app_router.dart';
 import 'src/features/auth/presentation/cubit/auth_cubit.dart';
@@ -12,21 +14,34 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => sl<AuthCubit>()..checkAuthStatus(),
-        ),
-        BlocProvider(
-          create: (_) => sl<TaskCubit>()..loadTasks(),
-        ),
+        BlocProvider(create: (_) => sl<AuthCubit>()..checkAuthStatus()),
+        BlocProvider(create: (_) => sl<TaskCubit>()..loadTasks()),
       ],
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'Task Manager (Clean Arch)',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
-          useMaterial3: true,
-        ),
-        routerConfig: AppRouter.router,
+      child: Builder(
+        builder: (context) {
+          return BlocListener<AuthCubit, AuthState>(
+            listener: (context, state) {
+              // Global Auth State Listener
+              // When user is logged out (from any source), navigate to login
+              if (state is AuthUnauthenticated) {
+                context.go('/login');
+              }
+              // When user is authenticated, navigate to tasks
+              if (state is AuthAuthenticated) {
+                context.go('/tasks');
+              }
+            },
+            child: MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'Task Manager (Clean Arch)',
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
+                useMaterial3: true,
+              ),
+              routerConfig: AppRouter.router,
+            ),
+          );
+        },
       ),
     );
   }

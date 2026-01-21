@@ -1,0 +1,44 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter (Chrome)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_development.dart",
+            "cwd": "${workspaceFolder}/task_manager_app",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-port",
+                "5000"
+            ]
+        },
+        {
+            "name": "Flutter (Mobile)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_development.dart",
+            "cwd": "${workspaceFolder}/task_manager_app"
+        },
+        {
+            "name": "Node.js Server",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/server.js",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "console": "integratedTerminal"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack (Web)",
+            "configurations": [
+                "Node.js Server",
+                "Flutter (Chrome)"
+            ]
+        }
+    ]
+}

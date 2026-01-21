@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../core/network/auth_event_bus.dart';
 import '../../domain/usecases/check_auth_status_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
@@ -26,11 +27,18 @@ class AuthCubit extends Cubit<AuthState> {
         _logoutUseCase = logoutUseCase,
         _authEventBus = authEventBus,
         super(AuthInitial()) {
-    _authEventSubscription = _authEventBus.onEvent.listen((event) {
-      if (event == AuthEvent.logout) {
-        logout();
-      }
-    });
+    _authEventSubscription = _authEventBus.onEvent.listen(
+      (event) {
+        if (event == AuthEvent.logout) {
+          logout();
+        }
+      },
+      onError: (error, stackTrace) {
+        // Log the error but don't crash
+        print('❌ AuthEventBus Error: $error');
+        // Optionally: log to Crashlytics/Sentry
+      },
+    );
   }
 
   @override
