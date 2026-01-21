@@ -25,18 +25,17 @@ Map<String, dynamic> _$PaginationInfoToJson(_PaginationInfo instance) =>
 _PaginatedResponse<T> _$PaginatedResponseFromJson<T>(
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
-) =>
-    _PaginatedResponse<T>(
-      items: (json['items'] as List<dynamic>).map(fromJsonT).toList(),
-      pagination:
-          PaginationInfo.fromJson(json['pagination'] as Map<String, dynamic>),
-    );
+) => _PaginatedResponse<T>(
+  items: (json['items'] as List<dynamic>).map(fromJsonT).toList(),
+  pagination: PaginationInfo.fromJson(
+    json['pagination'] as Map<String, dynamic>,
+  ),
+);
 
 Map<String, dynamic> _$PaginatedResponseToJson<T>(
   _PaginatedResponse<T> instance,
   Object? Function(T value) toJsonT,
-) =>
-    <String, dynamic>{
-      'items': instance.items.map(toJsonT).toList(),
-      'pagination': instance.pagination,
-    };
+) => <String, dynamic>{
+  'items': instance.items.map(toJsonT).toList(),
+  'pagination': instance.pagination,
+};
